@@ -63,5 +63,10 @@ class User
         $admin = !empty($data['admin']) && $data['admin'] !== 0 ? 1 : 0;
         $stmt = $this->db->prepare("UPDATE users SET login =?, is_admin =? WHERE id =?");
         $stmt->bind_param('sii', $login, $admin, $id);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

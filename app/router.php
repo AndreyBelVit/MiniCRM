@@ -29,6 +29,9 @@ class Router
                         case 'edit':
                             $controller->edit();
                             break;
+                        case 'update':
+                            $controller->update();
+                            break;
                     }
                 } else {
                     $controller->index();
