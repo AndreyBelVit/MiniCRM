@@ -2,70 +2,103 @@
 
 class User
 {
-  private $db;
-  public function __construct()
-  {
-    $this->db = Database::getInstance()->getConnection();
-  }
+    private $db;
 
-  public function readAll()
-  {
-    $result = $this->db->query("SELECT * FROM users");
-    $users = [];
-    while ($row = $result->fetch_assoc()) {
-      $users[] = $row;
+    public function __construct()
+    {
+        $this->db = Database::getInstance()->getConnection();
+        try {
+            $result = $this->db->query("SELECT 1 FROM `users` LIMIT 1");
+        } catch (PDOException $e) {
+            $this->createTable();
+        }
     }
-    return $users;
-  }
 
-  public function create($data)
-  {
-    $login = $data['login'];
-    $password = password_hash($data['password'], PASSWORD_DEFAULT);
-    // $admin = isset($data['admin']) ? 1 : 0;
-    $admin = !empty($data['admin']) && $data['admin'] !== 0 ? 1 : 0;
-    $created_at = date('Y-m-d H:i:s');
+    public function createTable()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `users` (
+            `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `login` VARCHAR(255) NOT NULL,
+            `password` VARCHAR(255) NOT NULL,
+            `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
+            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )";
+        try {
+            $this->db->exec($query);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
 
-    $stmt = $this->db->prepare("INSERT INTO users (login, password, is_admin, created_at) VALUE (?,?,?,?)");
-    $stmt->bind_param('ssis', $login, $password, $admin, $created_at);
-
-    if ($stmt->execute()) {
-      return true;
-    } else {
-      return false;
-      
     }
-  }
+
+    public function readAll()
+    {
+        try {
+            $stmt = $this->db->query("SELECT * FROM `users`");
+            $users = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $users[] = $row;
+            }
+            return $users;
+        } catch (PDOException $e) {
+            return false;
+        }
+
+    }
+
+    public function create($data)
+    {
+        $login = $data['login'];
+        $password = password_hash($data['password'], PASSWORD_DEFAULT);
+        // $admin = isset($data['admin']) ? 1 : 0;
+        $admin = !empty($data['admin']) && $data['admin'] !== 0 ? 1 : 0;
+        $created_at = date('Y-m-d H:i:s');
+
+        $query = "INSERT INTO users (login, password, is_admin, created_at) VALUE (?,?,?,?)";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$login, $password, $admin, $created_at]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
     public function delete($id)
     {
-        $stmt = $this->db->prepare("DELETE FROM users WHERE id =?");
-        $stmt->bind_param('i', $id);
-
-        if ($stmt->execute()) {
+        $query = "DELETE FROM users WHERE id =?";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$id]);
             return true;
-        } else {
+        } catch (PDOException $e) {
             return false;
         }
     }
 
     public function read($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE id =?");
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        $query = "SELECT * FROM users WHERE id =?";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function update($id, $data)
     {
         $login = $data['login'];
         $admin = !empty($data['admin']) && $data['admin'] !== 0 ? 1 : 0;
-        $stmt = $this->db->prepare("UPDATE users SET login =?, is_admin =? WHERE id =?");
-        $stmt->bind_param('sii', $login, $admin, $id);
-        if ($stmt->execute()) {
+        $query = "UPDATE users SET login =?, is_admin =? WHERE id =?";
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$login, $admin, $id]);
             return true;
-        } else {
+        } catch (PDOException $e) {
             return false;
         }
     }
