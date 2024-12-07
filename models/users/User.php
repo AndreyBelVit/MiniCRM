@@ -1,4 +1,7 @@
 <?php
+namespace models\users;
+
+use models\Database;
 
 class User{
     private $db;
@@ -8,7 +11,7 @@ class User{
 
         try{
             $result = $this->db->query("SELECT 1 FROM `users` LIMIT 1");
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             $this->createTable();
         }
     }
@@ -39,7 +42,7 @@ class User{
             $this->db->exec($roleTableQuery);
             $this->db->exec($userTableQuery);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -49,11 +52,11 @@ class User{
             $stmt = $this->db->query("SELECT * FROM `users`");
 
             $users = [];
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $users[] = $row;
             }
             return $users;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -63,20 +66,20 @@ class User{
         $email = $data['email'];
         $password = $data['password'];
         $role = $data['role'];
-
+    
         $created_at = date('Y-m-d H:i:s');
-
+    
         $query = "INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)";
-
+    
         try {
             $stmt = $this->db->prepare($query);
             $stmt->execute([$username, $email, password_hash($password, PASSWORD_DEFAULT), $role, $created_at]);
             return true;
-        } catch(PDOException $e) {
+        } catch(\PDOException $e) {
             return false;
         }
     }
-
+    
 
     public function delete($id){
         $query = "DELETE FROM users WHERE id = ?";
@@ -85,7 +88,7 @@ class User{
             $stmt =$this->db->prepare($query);
             $stmt->execute([$id]);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -96,9 +99,9 @@ class User{
         try{
             $stmt =$this->db->prepare($query);
             $stmt->execute([$id]);
-            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $res;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
@@ -109,17 +112,17 @@ class User{
         $email = $data['email'];
         $role = $data['role'];
         $is_active = isset($data['is_active']) ? 1 : 0;
-
+    
         $query = "UPDATE users SET username = ?, email = ?, is_admin = ?, role = ?, is_active = ? WHERE id = ?";
-
+    
         try{
             $stmt = $this->db->prepare($query);
             $stmt->execute([$username, $email, $admin, $role, $is_active, $id]);
             return true;
-        } catch(PDOException $e){
+        } catch(\PDOException $e){
             return false;
         }
     }
-
+    
 
 }

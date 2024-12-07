@@ -1,0 +1,13 @@
+RewriteEngine On
+AddDefaultCharset utf-8
+DirectoryIndex index.php
+RewriteEngine on
+# Исключить доступ к реальным файлам и каталогам
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Перенаправить запросы на index.php
+RewriteRule ^(.*)$ index.php
+
+
+
