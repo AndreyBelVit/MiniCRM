@@ -2,23 +2,38 @@
 
 namespace controllers\roles;
 
+use models\Check;
 use models\roles\Role;
 
-class RoleController{
+class RoleController
+{
+    private $check;
 
-    public function index(){
+    public function __construct()
+    {
+        $userRole = $_SESSION['user_role'] ?? null;
+        $this->check = new Check($userRole);
+    }
+
+    public function index()
+    {
+        $this->check->requirePermission();
         $roleModel = new Role();
         $roles = $roleModel->getAllRoles();
 
         include 'app/views/roles/index.php';
     }
 
-    public function create(){
+    public function create()
+    {
+        $this->check->requirePermission();
         include 'app/views/roles/create.php';
     }
 
-    public function store(){
-        if(isset($_POST['role_name']) && isset($_POST['role_description'])){
+    public function store()
+    {
+        $this->check->requirePermission();
+        if (isset($_POST['role_name']) && isset($_POST['role_description'])) {
             $role_name = trim($_POST['role_name']);
             $role_description = trim($_POST['role_description']);
 
@@ -34,11 +49,13 @@ class RoleController{
         header("Location: $path");
     }
 
-    public function edit($params){
+    public function edit($params)
+    {
+        $this->check->requirePermission();
         $roleModel = new Role();
         $role = $roleModel->getRoleById($params['id']);
 
-        if(!$role){
+        if (!$role) {
             echo "Role not found";
             return;
         }
@@ -47,9 +64,10 @@ class RoleController{
     }
 
 
-    public function update($params){
-
-        if(isset($params['id']) && isset($_POST['role_name']) && isset($_POST['role_description'])){
+    public function update($params)
+    {
+        $this->check->requirePermission();
+        if (isset($params['id']) && isset($_POST['role_name']) && isset($_POST['role_description'])) {
             $id = trim($params['id']);
             $role_name = trim($_POST['role_name']);
             $role_description = trim($_POST['role_description']);
@@ -66,7 +84,9 @@ class RoleController{
         header("Location: $path");
     }
 
-    public function delete($params){
+    public function delete($params)
+    {
+        $this->check->requirePermission();
         $roleModel = new Role();
         $roleModel->deleteRole($params['id']);
 
