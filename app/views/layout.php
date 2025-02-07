@@ -4,6 +4,7 @@
     <title><?= $title ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/app/css/style.css">
+    <script src="https://kit.fontawesome.com/6e56039614.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
@@ -61,7 +62,32 @@
                             Категории
                         </a>
                     </li>
-
+                    <li>
+                        <a href="<?= APP_BASE_PATH ?>/todo/tasks" class="nav-link text-white <?= is_active( APP_BASE_PATH . '/todo/tasks') ?>">
+                            <svg class="bi me-2" width="16" height="16">
+                                <use xlink:href="<?= APP_BASE_PATH ?>/todo/tasks"></use>
+                            </svg>
+                            Задачи (актуальные)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= APP_BASE_PATH ?>/todo/tasks/completed" class="nav-link text-white <?= is_active( APP_BASE_PATH . '/todo/tasks/completed') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="<?= APP_BASE_PATH ?>/todo/tasks/completed"></use></svg>
+                            Задачи (завершенные)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= APP_BASE_PATH ?>/todo/tasks/expired" class="nav-link text-white <?= is_active( APP_BASE_PATH . '/todo/tasks/expired') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="<?= APP_BASE_PATH ?>/todo/tasks/expired"></use></svg>
+                            Задачи (просроченные)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= APP_BASE_PATH ?>/todo/tasks/create" class="nav-link text-white <?= is_active( APP_BASE_PATH . '/todo/tasks/create') ?>">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="<?= APP_BASE_PATH ?>/todo/tasks/create"></use></svg>
+                            Создать задачу
+                        </a>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown">
@@ -96,6 +122,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="<?= APP_BASE_PATH ?>/app/js/my.js"></script>
 
 </body>
 </html>
