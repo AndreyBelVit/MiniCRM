@@ -1,3 +1,7 @@
+<?php
+$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : 'no-name';
+$user_role = isset($_SESSION['user_role']) ? $_SESSION['user_role'] : false;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= APP_BASE_PATH ?>/app/css/style.css">
     <script src="https://kit.fontawesome.com/6e56039614.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/app/libs/flatpickr/node_modules/flatpickr/dist/flatpickr.min.css">
+    <script src="/app/libs/flatpickr/node_modules/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="/app/libs/calendar/node_modules/fullcalendar/index.global.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -16,10 +23,11 @@
                     <svg class="bi me-2" width="40" height="32">
                         <use xlink:href="#bootstrap"></use>
                     </svg>
-                    <span class="fs-4">Mini CRM</span>
+                    <span class="fs-4">Система CRM</span>
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
+                    <?php if($user_role == 5): ?>
                     <li class="nav-item">
                         <a href="/<?= APP_BASE_PATH ?>" class="nav-link text-white <?= is_active('/' . APP_BASE_PATH) ?>" aria-current="page">
                             <svg class="bi me-2" width="16" height="16">
@@ -53,6 +61,7 @@
                         </a>
                     </li>
                     <hr/>
+                    <?php endif ?>
                     <h4 class="fs-4">ToDo List</h4>
                     <li>
                         <a href="<?= APP_BASE_PATH ?>/todo/category" class="nav-link text-white <?= is_active( APP_BASE_PATH . '/todo/category') ?>">
@@ -94,12 +103,12 @@
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>Пользователь</strong>
+                        <strong><?=$user_email?></strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Новый проект...</a></li>
-                        <li><a class="dropdown-item" href="#">Настройки</a></li>
-                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+<!--                        <li><a class="dropdown-item" href="#">Новый проект...</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Настройки</a></li>-->
+<!--                        <li><a class="dropdown-item" href="#">Профиль</a></li>-->
                         <li>
                             <hr class="dropdown-divider">
                         </li>

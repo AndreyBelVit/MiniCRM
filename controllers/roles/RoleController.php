@@ -34,8 +34,8 @@ class RoleController
     {
         $this->check->requirePermission();
         if (isset($_POST['role_name']) && isset($_POST['role_description'])) {
-            $role_name = trim($_POST['role_name']);
-            $role_description = trim($_POST['role_description']);
+            $role_name = trim(htmlspecialchars($_POST['role_name']));
+            $role_description = trim(htmlspecialchars($_POST['role_description']));
 
             if (empty($role_name)) {
                 echo "Role name is required!";
@@ -69,8 +69,8 @@ class RoleController
         $this->check->requirePermission();
         if (isset($params['id']) && isset($_POST['role_name']) && isset($_POST['role_description'])) {
             $id = trim($params['id']);
-            $role_name = trim($_POST['role_name']);
-            $role_description = trim($_POST['role_description']);
+            $role_name = trim(htmlspecialchars($_POST['role_name']));
+            $role_description = trim(htmlspecialchars($_POST['role_description']));
 
             if (empty($role_name)) {
                 echo "Role name is required";

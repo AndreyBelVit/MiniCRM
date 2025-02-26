@@ -85,6 +85,7 @@ class TagsModel
 
     public function addTag($tag_name, $user_id)
     {
+        $tag_name = strtolower($tag_name);
         $query = "INSERT INTO tags (name, user_id) VALUE (?, ?)";
 
         try {
@@ -123,6 +124,19 @@ class TagsModel
                 return true;
             }
         } catch (\PDOException $e) {
+            return false;
+        }
+    }
+    public function getTagNameById($tag_id)
+    {
+        $query = "SELECT name FROM tags WHERE id = ?";
+
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$tag_id]);
+            $tag = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $tag ? $tag['name'] : '';
+        } catch(\PDOException $e) {
             return false;
         }
     }

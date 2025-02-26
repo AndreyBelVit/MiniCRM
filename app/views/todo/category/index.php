@@ -4,7 +4,7 @@ $title = 'Todo Category';
 ob_start();
 ?>
 
-    <h1 class="mb-4">ToDo Category</h1>
+    <h1 class="mb-4">Категории</h1>
     <a href="<?= APP_BASE_PATH ?>/todo/category/create" class="btn btn-success">Create category</a>
     <table class="table">
         <thead>

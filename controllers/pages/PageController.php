@@ -39,12 +39,14 @@ class PageController
     {
         $this->check->requirePermission();
         if (isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])) {
-            $title = trim($_POST['title']);
-            $slug = trim($_POST['slug']);
-            $roles = implode(',', $_POST['roles']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $slug = trim(htmlspecialchars($_POST['slug']));
+            $roles = filter_var_array($_POST['roles'], FILTER_SANITIZE_NUMBER_INT);
+
+            $roles = implode(",", $roles);
 
             if (empty($title) || empty($slug) || empty($roles)) {
-                echo "Title and Slug or Roles fields are required!";
+                echo "Title and Slug or Role fields are required!";
                 return;
             }
 
@@ -74,23 +76,25 @@ class PageController
     public function update($params)
     {
         $this->check->requirePermission();
-        if (isset($_POST['role'])) {
-            $newRole = $_POST['role'];
-            if ($this->check->isCurrentUserRole($newRole)) {
-                $path = APP_BASE_PATH . '/auth/logout';
-                header("Location: $path");
-                exit();
-            }
-        }
+//        if (isset($_POST['role'])) {
+//            $newRole = $_POST['role'];
+//            if ($this->check->isCurrentUserRole($newRole)) {
+//                $path = APP_BASE_PATH . '/auth/logout';
+//                header("Location: $path");
+//                exit();
+//            }
+//        }
 
-        if (isset($params['id']) && isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])) {
+        if(isset($params['id']) && isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['roles'])){
             $id = trim($params['id']);
-            $title = trim($_POST['title']);
-            $slug = trim($_POST['slug']);
-            $roles = implode(',', $_POST['roles']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $slug = trim(htmlspecialchars($_POST['slug']));
+            $roles = filter_var_array($_POST['roles'], FILTER_SANITIZE_NUMBER_INT);
+
+            $roles = implode(",", $roles);
 
             if (empty($title) || empty($slug) || empty($roles)) {
-                echo "Title and Slug or Roles fields are required!";
+                echo "Title and Slug or Role fields are required!";
                 return;
             }
 

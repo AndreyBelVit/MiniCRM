@@ -35,8 +35,8 @@ class CategoryController
     {
         $this->check->requirePermission();
         if (isset($_POST['title']) && isset($_POST['description'])) {
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
+            $title = trim(htmlspecialchars($_POST['title']));
+            $description = trim(htmlspecialchars($_POST['description']));
             $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
             if (empty($title) && empty($description)) {
@@ -51,14 +51,17 @@ class CategoryController
         header("Location: $path");
     }
 
-    public function edit($params)
-    {
+    public function edit($params){
         $this->check->requirePermission();
+
         $todoCategoryModel = new CategoryModel();
         $category = $todoCategoryModel->getCategoryById($params['id']);
 
-        if (!$category) {
-            echo "Category not found";
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+
+        if(!$category || $category['user'] != $user_id){
+            http_response_code(404);
+            include 'app/views/errors/404.php';
             return;
         }
 
@@ -71,9 +74,9 @@ class CategoryController
         $this->check->requirePermission();
         if (isset($params['id']) && isset($_POST['title']) && isset($_POST['description'])) {
             $id = trim($params['id']);
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
-            $usability = isset($_POST['usability']) ? $_POST['usability'] : 0;
+            $title = trim(htmlspecialchars($_POST['title']));
+            $description = trim(htmlspecialchars($_POST['description']));
+            $usability  = isset($_POST['usability']) ? $_POST['usability'] : 0;
 
             if (empty($title) && empty($description)) {
                 echo "Title and Description are required";

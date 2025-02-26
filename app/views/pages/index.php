@@ -4,7 +4,7 @@ $title = 'Pages';
 ob_start(); 
 ?>
 
-  <h1 class="mb-4">Pages</h1>
+  <h1 class="mb-4">Доступ к странцам</h1>
   <a href="<?= APP_BASE_PATH ?>/pages/create" class="btn btn-success">Create page</a>
     <table class="table">
     <thead>

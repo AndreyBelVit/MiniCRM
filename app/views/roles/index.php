@@ -4,7 +4,7 @@ $title = 'Roles';
 ob_start(); 
 ?>
 
-  <h1 class="mb-4">Roles</h1>
+  <h1 class="mb-4">Роли для пользователей</h1>
   <a href="<?= APP_BASE_PATH ?>/roles/create" class="btn btn-success">Create role</a>
     <table class="table">
     <thead>

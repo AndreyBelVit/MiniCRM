@@ -8,7 +8,7 @@ class PageModel {
     private $db;
 
     public function __construct(){
-        $this->db = Database::getInstance()->getConnection();
+         $this->db = Database::getInstance()->getConnection();
 
         try{
             $result = $this->db->query("SELECT 1 FROM `pages` LIMIT 1");
